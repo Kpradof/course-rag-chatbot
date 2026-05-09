@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   totalCourses = document.getElementById('totalCourses');
   courseTitles = document.getElementById('courseTitles');
 
-  // Restore saved theme preference
+  // Restore saved theme preference, defaulting to dark
   const savedTheme = localStorage.getItem('theme') || 'dark';
   applyTheme(savedTheme);
 
@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Event Listeners
 function setupEventListeners() {
-  // Chat functionality
   sendButton.addEventListener('click', sendMessage);
   chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -51,10 +50,8 @@ function setupEventListeners() {
   });
   document.getElementById('newChatBtn').addEventListener('click', createNewSession);
 
-  // Theme toggle
   document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-  // Suggested questions
   document.querySelectorAll('.suggested-item').forEach((button) => {
     button.addEventListener('click', (e) => {
       const question = e.target.getAttribute('data-question');
@@ -71,15 +68,12 @@ async function sendMessage() {
     return;
   }
 
-  // Disable input
   chatInput.value = '';
   chatInput.disabled = true;
   sendButton.disabled = true;
 
-  // Add user message
   addMessage(query, 'user');
 
-  // Add loading message - create a unique container for it
   const loadingMessage = createLoadingMessage();
   chatMessages.appendChild(loadingMessage);
   chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -102,16 +96,13 @@ async function sendMessage() {
 
     const data = await response.json();
 
-    // Update session ID if new
     if (!currentSessionId) {
       currentSessionId = data.session_id;
     }
 
-    // Replace loading message with response
     loadingMessage.remove();
     addMessage(data.answer, 'assistant', data.sources);
   } catch (error) {
-    // Replace loading message with error
     loadingMessage.remove();
     addMessage(`Error: ${error.message}`, 'assistant');
   } finally {
@@ -125,14 +116,14 @@ function createLoadingMessage() {
   const messageDiv = document.createElement('div');
   messageDiv.className = 'message assistant';
   messageDiv.innerHTML = `
-        <div class="message-content">
-            <div class="loading">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    `;
+    <div class="message-content">
+      <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
   return messageDiv;
 }
 
@@ -142,7 +133,6 @@ function addMessage(content, type, sources = null, isWelcome = false) {
   messageDiv.className = `message ${type}${isWelcome ? ' welcome-message' : ''}`;
   messageDiv.id = `message-${messageId}`;
 
-  // Convert markdown to HTML for assistant messages
   const displayContent = type === 'assistant' ? marked.parse(content) : escapeHtml(content);
 
   let html = `<div class="message-content">${displayContent}</div>`;
@@ -156,11 +146,11 @@ function addMessage(content, type, sources = null, isWelcome = false) {
       )
       .join('');
     html += `
-            <details class="sources-collapsible">
-                <summary class="sources-header">Sources</summary>
-                <div class="sources-content">${sourceLinks}</div>
-            </details>
-        `;
+      <details class="sources-collapsible">
+        <summary class="sources-header">Sources</summary>
+        <div class="sources-content">${sourceLinks}</div>
+      </details>
+    `;
   }
 
   messageDiv.innerHTML = html;
@@ -170,14 +160,11 @@ function addMessage(content, type, sources = null, isWelcome = false) {
   return messageId;
 }
 
-// Helper function to escape HTML for user messages
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
-
-// Removed removeMessage function - no longer needed since we handle loading differently
 
 async function createNewSession() {
   if (currentSessionId) {
@@ -197,7 +184,6 @@ async function createNewSession() {
   );
 }
 
-// Load course statistics
 async function loadCourseStats() {
   try {
     console.log('Loading course stats...');
@@ -209,12 +195,10 @@ async function loadCourseStats() {
     const data = await response.json();
     console.log('Course data received:', data);
 
-    // Update stats in UI
     if (totalCourses) {
       totalCourses.textContent = data.total_courses;
     }
 
-    // Update course titles
     if (courseTitles) {
       if (data.course_titles && data.course_titles.length > 0) {
         courseTitles.innerHTML = data.course_titles
@@ -226,7 +210,6 @@ async function loadCourseStats() {
     }
   } catch (error) {
     console.error('Error loading course stats:', error);
-    // Set default values on error
     if (totalCourses) {
       totalCourses.textContent = '0';
     }
