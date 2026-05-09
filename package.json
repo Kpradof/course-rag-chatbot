@@ -1,0 +1,20 @@
+{
+  "name": "rag-chatbot-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write \"frontend/**/*.{html,js,css}\"",
+    "format:check": "prettier --check \"frontend/**/*.{html,js,css}\"",
+    "lint": "eslint frontend/script.js",
+    "lint:fix": "eslint --fix frontend/script.js",
+    "quality": "npm run format:check && npm run lint",
+    "quality:fix": "npm run format && npm run lint:fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "globals": "^15.15.0",
+    "prettier": "^3.8.3"
+  }
+}
