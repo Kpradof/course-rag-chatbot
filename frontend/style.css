@@ -91,25 +91,15 @@ body {
   padding: 0;
 }
 
-/* Header - Hidden */
+/* Header */
 header {
-  display: none;
-}
-
-header h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0;
-}
-
-.subtitle {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1.25rem;
+  height: 56px;
+  background: linear-gradient(135deg, #1e40af 0%, #6d28d9 100%);
+  flex-shrink: 0;
 }
 
 /* Main Content Area with Sidebar */
@@ -759,43 +749,38 @@ details[open] .suggested-header::before {
    - Moon visible in light mode (prompts switching to dark)
    ============================================================ */
 .theme-toggle {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--surface);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  box-shadow: var(--shadow);
+  flex-shrink: 0;
   transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .theme-toggle:hover {
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
   transform: scale(1.08);
 }
 
 .theme-toggle:focus {
   outline: none;
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 /* Remove focus ring on mouse click, keep it for keyboard */
 .theme-toggle:focus:not(:focus-visible) {
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 
 /* Sun icon — visible in dark mode; fades out in light mode */
